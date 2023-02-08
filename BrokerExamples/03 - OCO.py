@@ -35,9 +35,9 @@ class OCO(bt.Strategy):
             if self.order and self.order.status == bt.Order.Accepted:  # Если заявка не исполнена (принята брокером)
                 self.cancel(self.order)  # то снимаем ее
             close_minus_n = self.data.close[0] * (1 - self.p.LimitPct / 100)  # На n% ниже цены закрытия
-            self.order = self.buy(exectype=bt.Order.Limit, price=close_minus_n)  # Лимитная заявка на покупку
+            self.order = self.buy(exectype=bt.Order.Limit, plimit=close_minus_n)  # Лимитная заявка на покупку
             close_plus_n = self.data.close[0] * (1 + self.p.LimitPct / 100)  # На n% выше цены закрытия
-            self.sell(exectype=bt.Order.Limit, price=close_plus_n, oco=self.order)  # Зависимая лимитная заявка на короткую продажу
+            self.sell(exectype=bt.Order.Limit, plimit=close_plus_n, oco=self.order)  # Зависимая лимитная заявка на короткую продажу
         else:  # Если позиция есть
             self.order = self.close()  # Заявка на закрытие позиции по рыночной цене
 
